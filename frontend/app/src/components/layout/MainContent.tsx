@@ -1,14 +1,24 @@
-import React from 'react'
+import React from 'react';
 
 interface MainContentProps {
-  // TODO: Define component props
+  children: React.ReactNode;
+  className?: string;
 }
 
-export const MainContent: React.FC<MainContentProps> = () => {
+export const MainContent: React.FC<MainContentProps> = ({ 
+  children, 
+  className = '' 
+}) => {
   return (
-    <div>
-      {/* TODO: Implement MainContent component */}
-      <h1>MainContent</h1>
-    </div>
-  )
-}
+    <main 
+      className={`flex-1 overflow-auto p-6 ${className}`}
+      data-testid="main-content"
+    >
+      <div className="max-w-7xl mx-auto">
+        {children}
+      </div>
+    </main>
+  );
+};
+
+export default MainContent;

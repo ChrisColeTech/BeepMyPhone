@@ -1,5 +1,160 @@
 # Frontend Implementation Plan
 
+## 📝 TERMINOLOGY GUIDE
+
+**To avoid confusion, this document uses consistent terminology:**
+
+- **🎯 Objectives**: High-level goals listed in this document (Objective 1, 2, 3, etc.)
+  - These are strategic areas requiring analysis and planning before implementation
+  - Most objectives require breaking down into multiple implementation steps
+- **🔧 Steps**: Standard implementation work breakdown for each objective
+  - **Step 1: Analysis & Discovery** - Examine code to understand specific issues and patterns
+  - **Step 2: Design & Planning** - Determine technical approach and create implementation plan
+  - **Step 3: Implementation** - Execute the planned code changes with build verification
+  - **Step 4: Testing & Validation** - Verify functionality works correctly after changes
+  - **Step 5: Documentation & Tracking** - Create lessons learned doc and update remediation plan
+  - **Step 6: Git & Deployment Workflow** - Commit, push, and deploy via CI/CD pipeline
+  - **Step 7: Quality Assurance Final Check** - Verify all completion requirements are met
+- **✅ Subtasks**: Specific actionable items within each step
+  - Each step contains multiple subtasks that must be completed
+  - Subtasks are the actual work items that can be checked off
+  - Example: Step 1 might have subtasks like "Audit error handling patterns", "Catalog parsing violations", etc.
+- **📚 Phase Documentation**: Completion documentation files (Phases 1-13 for frontend)
+  - `PHASE_01_APPLICATION_LAYOUT.md` (Example frontend phase)
+
+**Summary**: Work on each **Objective** involves multiple **steps** and results in **Phase documentation** when complete.
+
+## 🛠️ IMPLEMENTATION TOOLS & REQUIREMENTS
+
+### **📋 MANDATORY PRE-WORK FOR ALL OBJECTIVES**
+
+**Before beginning ANY objective work, you MUST:**
+
+1. **📖 Read Project Knowledge Base**
+
+   - **Location**: `/mnt/c/Projects/BeepMyPhone/docs/summaries/`
+   - **Requirement**: Read ALL relevant project knowledge documents
+   - **Purpose**: Understand existing architecture, patterns, and decisions
+   - **Files to Review**: All `.md` files in summaries directory for context
+
+2. **📚 Read Complete Remediation Plan**
+   - **This Document**: `/mnt/c/Projects/BeepMyPhone/frontend/docs/IMPLEMENTATION_PLAN.md`
+   - **Understanding**: Methodology, terminology, success criteria
+   - **Context**: How current objective fits into overall remediation strategy
+
+### **⚡ REQUIRED ANALYSIS TOOLS**
+
+**Use Serena MCP Tools for ALL code analysis and updates:**
+
+- **🎯 Project Activation**: **ALWAYS** activate the `BeepMyPhone` project first:
+
+  ```
+  mcp__serena__activate_project: project = "BeepMyPhone"
+  ```
+
+  - **CRITICAL**: Use "BeepMyPhone" (root project), NOT "frontend" or other subprojects
+  - This ensures access to correct project memories and context
+  - Verify activation shows BeepMyPhone specific memories and tools
+
+- **🔍 Code Analysis**: Use `mcp__serena__search_for_pattern`, `mcp__serena__find_symbol`, `mcp__serena__get_symbols_overview`
+- **📊 Code Understanding**: Use `mcp__serena__find_referencing_symbols` to understand dependencies
+- **✏️ Code Updates**: Use `mcp__serena__replace_symbol_body`, `mcp__serena__insert_after_symbol`, etc.
+- **💾 Knowledge Management**: Use `mcp__serena__write_memory`, `mcp__serena__read_memory` for findings
+
+**Benefits of Using Serena Tools:**
+
+- **Accuracy**: Symbol-level precision prevents errors
+- **Efficiency**: Faster than manual file reading and editing
+- **Context**: Better understanding of code relationships
+- **Consistency**: Standardized approach across all objectives
+
+### **🎯 IMPLEMENTATION APPROACH**
+
+**Required Process for Each Objective:**
+
+1. **Knowledge Gathering**: Read project summaries + remediation plan
+2. **Tool-Assisted Analysis**: Use Serena MCP tools for code examination
+3. **Systematic Implementation**: Follow 7-step methodology
+4. **Documentation**: Create phase documentation with lessons learned
+5. **Quality Assurance**: Verify all completion criteria
+
+**⚠️ CRITICAL**: Using proper tools and reading project context is mandatory for successful objective completion. This ensures accuracy, maintains consistency, and leverages established architectural knowledge.
+
+### **🚀 AUTONOMOUS EXECUTION REQUIREMENTS**
+
+**CRITICAL: Agents must complete objectives autonomously without stopping to ask questions.**
+
+**🛭 FIX ALL ISSUES ENCOUNTERED:**
+
+- **Never stop to ask "should I fix this?"** - If you discover issues during your objective work, **FIX THEM**
+- **Scope Boundary**: Fix any issues **within your objective scope** - don't hesitate
+- **Code Issues**: TypeScript errors, interface mismatches, missing methods, type conflicts - **FIX THEM ALL**
+- **Build Issues**: If `npm run build` fails due to your changes, **FIX THE ERRORS** until build passes
+- **Integration Issues**: If services don't integrate properly, **FIX THE INTEGRATION**
+
+**❗ DO NOT STOP FOR:**
+
+- TypeScript compilation errors - Fix them
+- Missing interface methods - Add them
+- Type mismatches - Resolve them
+- Build failures - Fix them
+- Integration problems - Solve them
+
+**🎯 COMPLETE ALL 7 STEPS:**
+
+- **Step 5**: Documentation & Tracking - **MANDATORY** update of remediation plan tracking table
+- **Step 6**: Git & Deployment - **MANDATORY** commit ALL changes and push via CI/CD
+- **Step 7**: Quality Assurance - **MANDATORY** verify ALL completion criteria
+
+**🎯 GOAL**: Complete objective with working code, passing build, complete documentation, and updated tracking.
+
+### **🚨 MANDATORY COMPLETION VERIFICATION FOR HAIKU AGENTS**
+
+**CRITICAL**: Due to Haiku agent limitations, these verification steps are MANDATORY before claiming completion:
+
+**📋 COMPLETION CHECKLIST - ALL MUST BE VERIFIED:**
+
+1. **✅ Code Changes Verification**:
+
+   - Run `git status` and verify files were actually modified
+   - Run `git diff` and verify the changes match the objective scope
+   - Verify ALL changed files are staged with `git add .`
+
+2. **✅ Build Verification**:
+
+   - Run `npm run build` and verify ZERO TypeScript errors
+   - If build fails, DO NOT claim completion until fixed
+   - Screenshot or copy the build success output
+
+3. **✅ Documentation Creation**:
+
+   - Create `/mnt/c/Projects/BeepMyPhone/frontend/docs/phases/PHASE_0X_OBJECTIVE_NAME.md` (Phases 1-13)
+   - Include quantified results, technical details, and architectural insights
+   - Verify the file exists with `ls -la /mnt/c/Projects/BeepMyPhone/frontend/docs/phases/PHASE_0*`
+
+4. **✅ Tracking Table Update**:
+
+   - Open `/mnt/c/Projects/BeepMyPhone/frontend/docs/IMPLEMENTATION_PLAN.md`
+   - Find the objective in the tracking table
+   - Change status from "❌ **NOT STARTED**" to "✅ **COMPLETED**"
+   - Verify the change with `grep "Objective XX.*COMPLETED" /mnt/c/Projects/BeepMyPhone/frontend/docs/IMPLEMENTATION_PLAN.md`
+
+5. **✅ Git Workflow Completion**:
+
+   - Run `git add .` to stage all changes
+   - Run `git commit -m "Phase 0X: Objective Name - [summary]"` (Phases 1-13)
+   - Run `git push origin main`
+   - Verify commit with `git log --oneline | head -1`
+
+6. **✅ CI/CD Verification**:
+   - Run `gh run list --limit 1` to get latest run ID
+   - Monitor with `gh run watch [run-id]` until completion
+   - Verify successful deployment
+
+**🚫 DO NOT CLAIM COMPLETION UNLESS ALL 6 STEPS VERIFIED SUCCESSFUL**
+
+**If ANY step fails, the objective is NOT complete - continue working until ALL steps pass.**
+
 ## 📋 Objective Index
 
 [Objective 1: Application Layout Structure](#objective-1-application-layout-structure)  
@@ -27,7 +182,7 @@ Create the core application layout structure with title bar, main content area, 
 #### Architecture Requirements
 
 - **SRP**: Layout component handles only UI structure responsibility (max 100 lines)
-- **OCP**: Layout extensible through props configuration without modification  
+- **OCP**: Layout extensible through props configuration without modification
 - **LSP**: Layout components substitutable with same interface contract
 - **ISP**: Layout interface contains only structure-related properties (max 3 props)
 - **DIP**: Depends on layout configuration abstraction, not concrete implementations
@@ -35,7 +190,7 @@ Create the core application layout structure with title bar, main content area, 
 #### Files to Create
 
 - app/src/components/layout/AppLayout.tsx
-- app/src/components/layout/TitleBar.tsx  
+- app/src/components/layout/TitleBar.tsx
 - app/src/components/layout/MainContent.tsx
 - app/src/styles/layout.css
 - app/tests/unit/components/layout/AppLayout.test.tsx
@@ -58,7 +213,7 @@ Create the core application layout structure with title bar, main content area, 
 
 - Layout renders correctly across different window sizes
 - Component passes TypeScript strict compilation
-- Unit tests achieve 90% line coverage  
+- Unit tests achieve 90% line coverage
 - Layout maintains 60fps during window operations
 - Accessibility audit passes WCAG 2.1 AA standards
 
@@ -74,7 +229,7 @@ Implement connection status indicator showing real-time backend service connecti
 
 - **SRP**: Status component handles only connection state display (max 80 lines)
 - **OCP**: Status types extensible through configuration enum
-- **LSP**: Status components substitutable with same props interface  
+- **LSP**: Status components substitutable with same props interface
 - **ISP**: Interface includes only connection state and visual props
 - **DIP**: Depends on connection state abstraction, not WebSocket implementation
 
@@ -125,7 +280,7 @@ Create device list component displaying registered mobile devices with basic inf
 #### Files to Create
 
 - app/src/components/devices/DeviceList.tsx
-- app/src/components/devices/DeviceItem.tsx  
+- app/src/components/devices/DeviceItem.tsx
 - app/src/types/deviceTypes.ts
 - app/tests/unit/components/devices/DeviceList.test.tsx
 
@@ -163,7 +318,7 @@ Implement form interface for registering new mobile devices with the system.
 - **SRP**: Add device form handles only device registration (max 100 lines)
 - **OCP**: Device types extensible without form modification
 - **LSP**: Form components substitutable with same interface
-- **ISP**: Interface includes only form data and submission handlers  
+- **ISP**: Interface includes only form data and submission handlers
 - **DIP**: Depends on device registration interface, not API implementation
 
 #### Files to Create
@@ -213,7 +368,7 @@ Create device removal capability with confirmation dialog and safe deletion proc
 #### Files to Create
 
 - app/src/components/devices/RemoveDeviceDialog.tsx
-- app/src/hooks/useRemoveDevice.ts  
+- app/src/hooks/useRemoveDevice.ts
 - app/tests/unit/components/devices/RemoveDeviceDialog.test.tsx
 
 #### Dependencies
@@ -262,7 +417,7 @@ Implement real-time device connectivity status indicators for each registered de
 #### Dependencies
 
 - Real-time device status updates
-- Status visualization components  
+- Status visualization components
 - Device status type definitions
 
 #### Implementation Requirements
@@ -292,7 +447,7 @@ Create monitoring component for backend service connectivity and health status.
 
 - **SRP**: Service monitor handles only backend connection monitoring (max 90 lines)
 - **OCP**: Service types extensible through service configuration
-- **LSP**: Monitor components substitutable with same interface  
+- **LSP**: Monitor components substitutable with same interface
 - **ISP**: Interface includes only service status and control props
 - **DIP**: Depends on service monitoring interface, not implementation details
 
@@ -594,16 +749,20 @@ Create activity feed showing recent notification forwarding events and delivery 
 ### SOLID Principles Application
 
 #### Single Responsibility Principle (SRP)
+
 Each component handles exactly one concern:
+
 - Layout components manage only UI structure
-- Device components manage only device-related functionality  
+- Device components manage only device-related functionality
 - Status components manage only connection/service status
 - Settings components manage only configuration options
 
 **Enforcement:** Component size limited to 120 lines maximum including imports and exports.
 
 #### Open/Closed Principle (OCP)
+
 Components extend functionality through:
+
 - Props interfaces for configuration
 - Composition patterns for feature extension
 - Configuration objects for behavior modification
@@ -612,7 +771,9 @@ Components extend functionality through:
 **Enforcement:** New features added through composition, not modification.
 
 #### Liskov Substitution Principle (LSP)
+
 Interface contracts ensure substitutability:
+
 - Components with same props interface are interchangeable
 - Hooks with same return interface are substitutable
 - Services with same contract are replaceable
@@ -620,7 +781,9 @@ Interface contracts ensure substitutability:
 **Enforcement:** Strict TypeScript interfaces prevent contract violations.
 
 #### Interface Segregation Principle (ISP)
+
 Focused interfaces prevent unnecessary dependencies:
+
 - Component props limited to 3 properties maximum
 - Hook interfaces specific to use case
 - Service contracts minimal and focused
@@ -628,7 +791,9 @@ Focused interfaces prevent unnecessary dependencies:
 **Enforcement:** Interface size limits enforced through TypeScript and code review.
 
 #### Dependency Inversion Principle (DIP)
+
 High-level components depend on abstractions:
+
 - Components depend on props interfaces, not implementations
 - Hooks depend on service contracts, not concrete services
 - Services depend on configuration abstractions
@@ -638,18 +803,21 @@ High-level components depend on abstractions:
 ### Anti-Pattern Prevention Rules
 
 #### Spaghetti Code Prevention
+
 - Clear component boundaries with single responsibility
 - Unidirectional data flow requirements
 - Explicit dependency declarations
 - Component coupling minimization through interfaces
 
-#### Monster Class Prevention  
+#### Monster Class Prevention
+
 - Component size limit: 120 lines maximum
 - Function length limit: 15 lines maximum
 - Cyclomatic complexity limit: 6 maximum
 - Props interface limit: 3 properties maximum
 
 #### God Object Prevention
+
 - Responsibility distribution across focused components
 - Service decomposition into single-purpose modules
 - State management boundaries clearly defined
@@ -670,22 +838,23 @@ High-level components depend on abstractions:
 - **Test Coverage:** Minimum 80% line coverage for all components
 - **Performance:** Component render time under 16ms
 - **Bundle Size:** Individual component chunks under 50KB compressed
+
 ## 📊 Progress Tracking
 
 | Objective | Feature                      | Status             | Files Created | Tests Passing | Completion Date |
-|-----------|------------------------------|--------------------|--------------|--------------|----|
-| 1         | Application Layout Structure | ❌ **NOT STARTED** | 0/5          | 0/1          | -  |
-| 2         | Connection Status Display    | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 3         | Device List Display          | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 4         | Add Device Form              | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 5         | Remove Device Functionality  | ❌ **NOT STARTED** | 0/3          | 0/1          | -  |
-| 6         | Device Status Indicators     | ❌ **NOT STARTED** | 0/3          | 0/1          | -  |
-| 7         | Service Connection Monitor   | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 8         | Connection Retry Logic       | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 9         | Settings Panel Interface     | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 10        | Theme Selection              | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 11        | Service Configuration        | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
-| 12        | Test Notification Sender     | ❌ **NOT STARTED** | 0/3          | 0/1          | -  |
-| 13        | Activity Feed Display        | ❌ **NOT STARTED** | 0/4          | 0/1          | -  |
+| --------- | ---------------------------- | ------------------ | ------------- | ------------- | --------------- |
+| 1         | Application Layout Structure | ✅ **COMPLETED**   | 5/5           | 1/1           | $(date '+%Y-%m-%d') |
+| 2         | Connection Status Display    | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 3         | Device List Display          | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 4         | Add Device Form              | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 5         | Remove Device Functionality  | ❌ **NOT STARTED** | 0/3           | 0/1           | -               |
+| 6         | Device Status Indicators     | ❌ **NOT STARTED** | 0/3           | 0/1           | -               |
+| 7         | Service Connection Monitor   | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 8         | Connection Retry Logic       | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 9         | Settings Panel Interface     | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 10        | Theme Selection              | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 11        | Service Configuration        | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
+| 12        | Test Notification Sender     | ❌ **NOT STARTED** | 0/3           | 0/1           | -               |
+| 13        | Activity Feed Display        | ❌ **NOT STARTED** | 0/4           | 0/1           | -               |
 
 **Total Implementation:** 0/50 files | 0/13 test suites | 0% Complete
