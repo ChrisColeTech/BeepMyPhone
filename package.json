@@ -1,0 +1,81 @@
+{
+  "name": "beepmyphone",
+  "version": "1.0.0",
+  "description": "PC-to-phone notification forwarding system with desktop application",
+  "private": true,
+  "author": "Claude (Anthropic AI Assistant)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/beepmyphone.git"
+  },
+  "scripts": {
+    "dev": "concurrently --names \"BACKEND,FRONTEND,ELECTRON\" --prefix-colors \"blue,green,yellow\" \"npm run backend\" \"npm run frontend\" \"sleep 5 && npm run electron\"",
+    "build": "cd backend/app && npm run build && cd ../../frontend/app && npm run build && cd ../../electron/app && npm run build",
+    "start": "concurrently --names \"BACKEND,ELECTRON\" --prefix-colors \"blue,yellow\" \"cd backend/app && npm start\" \"wait-on -t 30000 http://0.0.0.0:3001 && cd electron/app && npm start\"",
+    "bundle": "npm run build && electron-builder",
+    "backend": "cd backend/app && npm run dev",
+    "frontend": "cd frontend/app && npm run dev",
+    "electron": "cd electron/app && npm run dev",
+    "backend:build": "cd backend/app && npm run build",
+    "frontend:build": "cd frontend/app && npm run build",
+    "electron:build": "cd electron/app && npm run build",
+    "backend:start": "cd backend/app && npm start",
+    "electron:start": "cd electron/app && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "wait-on": "^8.0.4",
+    "cross-env": "^7.0.3",
+    "electron-builder": "^24.9.0"
+  },
+  "build": {
+    "appId": "com.beepmyphone.app",
+    "productName": "BeepMyPhone",
+    "directories": {
+      "app": "electron/app",
+      "output": "dist"
+    },
+    "files": [
+      "electron/app/dist/**/*",
+      "frontend/app/dist/**/*",
+      "backend/app/dist/**/*",
+      "electron/app/assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/app/dist",
+        "to": "backend"
+      },
+      {
+        "from": "frontend/app/dist",
+        "to": "frontend"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "electron/app/assets/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "electron/app/assets/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "electron/app/assets/icon.png"
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "notification",
+    "forwarding",
+    "desktop",
+    "electron",
+    "react",
+    "nodejs",
+    "typescript"
+  ]
+}
