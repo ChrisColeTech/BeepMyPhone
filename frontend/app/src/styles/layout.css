@@ -3,11 +3,11 @@
 /* Layout utility classes */
 @layer components {
   .layout-container {
-    @apply h-screen flex flex-col bg-gray-50;
+    @apply h-screen flex flex-col bg-background-app;
   }
 
   .layout-title-bar {
-    @apply h-12 bg-white border-b border-gray-200 flex items-center justify-between px-4 select-none;
+    @apply h-12 bg-background-card border-b border-border-default flex items-center justify-between px-4 select-none;
   }
 
   .layout-main-content {
@@ -20,15 +20,15 @@
 
   /* Title bar specific styles */
   .title-bar-logo {
-    @apply w-6 h-6 bg-blue-600 rounded flex items-center justify-center;
+    @apply w-6 h-6 bg-brand-primary rounded flex items-center justify-center;
   }
 
   .title-bar-logo-text {
-    @apply text-white text-xs font-bold;
+    @apply text-text-inverse text-xs font-bold;
   }
 
   .title-bar-title {
-    @apply text-sm font-medium text-gray-900;
+    @apply text-sm font-medium text-text-primary;
   }
 
   .title-bar-controls {
@@ -49,5 +49,26 @@
 
   .title-bar-control-close {
     @apply title-bar-control-button bg-red-500 hover:bg-red-600;
+  }
+
+  /* Application content styles */
+  .app-heading {
+    @apply text-3xl font-bold text-text-primary;
+  }
+
+  .app-description {
+    @apply text-lg text-text-secondary;
+  }
+
+  .status-card {
+    @apply bg-background-card p-6 rounded-lg shadow-sm border border-border-default;
+  }
+
+  .status-card-title {
+    @apply text-xl font-semibold text-text-primary;
+  }
+
+  .status-card-content {
+    @apply text-text-secondary;
   }
 }

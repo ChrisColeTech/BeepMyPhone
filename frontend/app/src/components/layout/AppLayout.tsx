@@ -14,7 +14,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   showTitleBar = true 
 }) => {
   return (
-    <div className="h-screen flex flex-col bg-gray-50" data-testid="app-layout">
+    <div className="layout-container" data-testid="app-layout">
       {showTitleBar && (
         <TitleBar title={title} />
       )}

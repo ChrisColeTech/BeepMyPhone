@@ -1,34 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { AppLayout } from './components/layout/AppLayout'
+import './styles/layout.css'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+    <AppLayout title="BeepMyPhone" showTitleBar={true}>
+      <div className="text-center">
+        <h1 className="app-heading mb-4">
+          BeepMyPhone Desktop
+        </h1>
+        <p className="app-description mb-8">
+          PC-to-Phone Notification Forwarding System
         </p>
+        <div className="status-card">
+          <h2 className="status-card-title mb-3">
+            Application Layout Complete
+          </h2>
+          <p className="status-card-content">
+            The foundational layout structure is now in place. 
+            Future objectives will add device management, connection status, 
+            settings, and notification features to this framework.
+          </p>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </AppLayout>
   )
 }
 
