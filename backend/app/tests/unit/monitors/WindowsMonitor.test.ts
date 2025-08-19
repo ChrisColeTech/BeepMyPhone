@@ -3,6 +3,25 @@ import { WindowsMonitor } from '../../../src/monitors/windows/WindowsMonitor';
 import { WindowsMonitorConfig, WindowsNotificationData } from '../../../src/types/windows-notifications';
 import { StandardNotification } from '../../../src/monitors/base/BaseMonitor';
 
+// Mock the Windows NodeRT module for testing
+jest.mock('@nodert-win10-rs4/windows.ui.notifications.management', () => ({
+  UserNotificationListener: {
+    current: {
+      requestAccessAsync: jest.fn(() => Promise.resolve(1)), // allowed status
+      getNotificationsAsync: jest.fn(() => Promise.resolve([])),
+      on: jest.fn(),
+      removeAllListeners: jest.fn()
+    }
+  },
+  UserNotificationListenerAccessStatus: {
+    allowed: 1,
+    denied: 2
+  },
+  NotificationKinds: {
+    toast: 1
+  }
+}), { virtual: true });
+
 describe('WindowsMonitor', () => {
   let monitor: WindowsMonitor;
   let mockConfig: WindowsMonitorConfig;
