@@ -9,7 +9,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     
   // App methods  
   minimize: () => ipcRenderer.invoke('minimize-app'),
+  maximize: () => ipcRenderer.invoke('maximize-app'),
   close: () => ipcRenderer.invoke('close-app'),
+  isMaximized: () => ipcRenderer.invoke('is-maximized'),
   getVersion: () => ipcRenderer.invoke('get-version'),
   
   // Backend communication
@@ -37,7 +39,9 @@ declare global {
     electronAPI: {
       showNotification: (title: string, message: string) => Promise<void>
       minimize: () => Promise<void>
+      maximize: () => Promise<void>
       close: () => Promise<void>
+      isMaximized: () => Promise<boolean>
       getVersion: () => Promise<string>
       connectToBackend: (port: number) => Promise<boolean>
       getSystemInfo: () => Promise<any>

@@ -11,10 +11,10 @@ export const MainContent: React.FC<MainContentProps> = ({
 }) => {
   return (
     <main 
-      className={`flex-1 overflow-auto p-6 ${className}`}
+      className={`flex-1 overflow-auto ${className}`}
       data-testid="main-content"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="h-full w-full p-6">
         {children}
       </div>
     </main>

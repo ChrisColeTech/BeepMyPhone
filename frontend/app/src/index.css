@@ -1,68 +1,524 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+/* Reset for desktop app fullscreen layout */
+html, body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* BeepMyPhone Desktop Application Styles */
+
+
+/* Light theme - Modern consumer-friendly design */
+:root {
+  /* Desktop colors (light theme default) - iOS/macOS inspired */
+  --desktop-titlebar-bg: #f6f6f6;
+  --desktop-titlebar-border: #d1d1d1;
+  --desktop-titlebar-text: #1d1d1f;
+  --desktop-titlebar-icon: #007aff;
+  
+  --desktop-statusbar-bg: #f6f6f6;
+  --desktop-statusbar-border: #d1d1d1;
+  --desktop-statusbar-text: #1d1d1f;
+  --desktop-statusbar-muted: #86868b;
+  
+  /* Semantic colors - Modern consumer palette */
+  --text-primary: #1d1d1f;
+  --text-secondary: #48484a;
+  --text-muted: #86868b;
+  --text-inverse: #ffffff;
+  
+  --background-app: #ffffff;
+  --background-card: #f9f9f9;
+  --background-elevated: #f2f2f7;
+  
+  --border-default: #d1d1d6;
+  --border-muted: #e5e5ea;
+  
+  --interactive-hover: #f2f2f7;
+  --interactive-pressed: #e5e5ea;
+  
+  /* Brand colors - iOS system blue */
+  --brand-primary: #007aff;
+  --brand-secondary: #0056cc;
+  
+  /* Desktop window controls */
+  --desktop-controls-close: #ff5f57;
+  --desktop-controls-minimize: #ffbd2e;
+  --desktop-controls-maximize: #28ca42;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Dark theme - Modern consumer-friendly design */
+.dark {
+  /* Desktop colors (dark theme) - iOS dark mode inspired */
+  --desktop-titlebar-bg: #1c1c1e;
+  --desktop-titlebar-border: #38383a;
+  --desktop-titlebar-text: #f2f2f7;
+  --desktop-titlebar-icon: #0a84ff;
+  
+  --desktop-statusbar-bg: #1c1c1e;
+  --desktop-statusbar-border: #38383a;
+  --desktop-statusbar-text: #f2f2f7;
+  --desktop-statusbar-muted: #8e8e93;
+  
+  /* Semantic colors - Modern dark palette */
+  --text-primary: #f2f2f7;
+  --text-secondary: #aeaeb2;
+  --text-muted: #8e8e93;
+  --text-inverse: #1c1c1e;
+  
+  --background-app: #000000;
+  --background-card: #1c1c1e;
+  --background-elevated: #2c2c2e;
+  
+  --border-default: #38383a;
+  --border-muted: #48484a;
+  
+  --interactive-hover: #2c2c2e;
+  --interactive-pressed: #3a3a3c;
+  
+  /* Brand colors - iOS system blue for dark mode */
+  --brand-primary: #0a84ff;
+  --brand-secondary: #409cff;
+  
+  /* Desktop window controls */
+  --desktop-controls-close: #ff5f57;
+  --desktop-controls-minimize: #ffbd2e;
+  --desktop-controls-maximize: #28ca42;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* Base layout container */
+@layer components {
+  .layout-container {
+    @apply h-screen flex flex-col bg-background-app;
   }
-  a:hover {
-    color: #747bff;
+
+  /* Professional Desktop Title Bar */
+  .desktop-title-bar {
+    @apply h-8 bg-desktop-titlebar-bg border-b border-desktop-titlebar-border flex items-center justify-between select-none;
+    -webkit-app-region: drag;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .title-bar-drag-area {
+    @apply flex-1;
+    -webkit-app-region: drag;
+  }
+
+  .title-bar-icon {
+    @apply w-4 h-4 text-desktop-titlebar-icon;
+  }
+
+  .title-bar-text {
+    @apply text-sm font-medium text-desktop-titlebar-text;
+  }
+
+  .title-bar-controls {
+    @apply flex items-center h-full;
+    -webkit-app-region: no-drag;
+  }
+
+  .title-bar-button {
+    @apply w-12 h-8 flex items-center justify-center text-desktop-statusbar-muted hover:text-desktop-titlebar-text hover:bg-interactive-hover transition-colors;
+  }
+
+  .title-bar-minimize {
+    @apply title-bar-button;
+  }
+
+  .title-bar-maximize {
+    @apply title-bar-button;
+  }
+
+  .title-bar-close {
+    @apply title-bar-button hover:bg-desktop-controls-close hover:text-white;
+  }
+
+  /* Theme Toggle Button */
+  .theme-toggle-button {
+    @apply w-8 h-6 flex items-center justify-center text-desktop-statusbar-muted hover:text-desktop-titlebar-text hover:bg-interactive-hover rounded transition-colors;
+    -webkit-app-region: no-drag;
+  }
+
+  /* Professional Desktop Status Bar */
+  .desktop-status-bar {
+    @apply h-6 bg-desktop-statusbar-bg border-t border-desktop-statusbar-border flex items-center px-2 text-xs select-none;
+  }
+
+  .status-text {
+    @apply font-mono text-desktop-statusbar-text;
+  }
+
+  /* Professional Desktop Sidebar */
+  .desktop-sidebar {
+    @apply bg-background-elevated border-r border-border-default flex flex-col h-full;
+  }
+
+  .desktop-sidebar-collapsed {
+    @apply w-12 bg-background-elevated border-r border-border-default flex flex-col h-full;
+  }
+
+  .sidebar-header {
+    @apply h-8 bg-desktop-titlebar-bg border-b border-desktop-titlebar-border flex items-center px-3 select-none;
+  }
+
+  .sidebar-header-content {
+    @apply flex items-center justify-between w-full;
+  }
+
+  .sidebar-header-title {
+    @apply text-sm font-medium text-desktop-titlebar-text;
+  }
+
+  .sidebar-collapse-button {
+    @apply w-6 h-6 flex items-center justify-center text-desktop-statusbar-muted hover:text-desktop-titlebar-text hover:bg-interactive-hover rounded transition-colors;
+  }
+
+  .sidebar-sections {
+    @apply flex-1 overflow-y-auto;
+  }
+
+  .sidebar-section {
+    @apply border-b border-border-muted last:border-b-0;
+  }
+
+  .sidebar-section-header {
+    @apply h-8 flex items-center px-3 cursor-pointer hover:bg-interactive-hover transition-colors;
+  }
+
+  .sidebar-section-header-content {
+    @apply flex items-center space-x-2 w-full text-sm;
+  }
+
+  .sidebar-section-chevron {
+    @apply w-3 h-3 text-text-muted;
+  }
+
+  .sidebar-section-icon {
+    @apply w-4 h-4 text-text-secondary;
+  }
+
+  .sidebar-section-title {
+    @apply font-medium text-text-primary select-none;
+  }
+
+  .sidebar-section-body {
+    @apply pb-2;
+  }
+
+  .sidebar-section-content {
+    @apply space-y-1;
+  }
+
+  .sidebar-item {
+    @apply flex items-center space-x-2 px-6 py-1.5 text-sm text-text-secondary hover:text-text-primary hover:bg-interactive-hover cursor-pointer transition-colors;
+  }
+
+  .sidebar-action {
+    @apply text-brand-primary hover:text-brand-primary;
+  }
+
+  /* Collapsed Sidebar Icons */
+  .sidebar-icons {
+    @apply flex flex-col items-center py-2 space-y-1;
+  }
+
+  .sidebar-icon-button {
+    @apply w-8 h-8 flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-interactive-hover rounded transition-colors;
+  }
+
+  /* Sidebar Navigation */
+  .sidebar-navigation {
+    @apply border-b border-border-muted;
+  }
+
+  .sidebar-nav-button {
+    @apply w-full h-10 flex items-center px-3 text-text-secondary hover:text-text-primary hover:bg-interactive-hover transition-colors;
+  }
+
+  .sidebar-nav-button.active {
+    @apply bg-brand-primary bg-opacity-10 text-brand-primary border-r-2 border-brand-primary;
+  }
+
+  /* Sidebar Footer */
+  .sidebar-footer {
+    @apply border-t border-border-muted mt-auto;
+  }
+
+  .sidebar-settings-button {
+    @apply w-full h-10 flex items-center px-3 text-text-secondary hover:text-text-primary hover:bg-interactive-hover transition-colors;
+  }
+
+  .sidebar-settings-button.active {
+    @apply bg-brand-primary bg-opacity-10 text-brand-primary;
+  }
+
+  /* Collapsed Sidebar Active States */
+  .sidebar-icon-button.active {
+    @apply bg-brand-primary bg-opacity-20 text-brand-primary;
+  }
+
+  /* Theme-aware status colors */
+  .status-success {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .status-error {
+    @apply bg-red-100 text-red-800;
+  }
+  
+  .status-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .text-status-success {
+    @apply text-green-600;
+  }
+
+  .text-status-error {
+    @apply text-red-600;
+  }
+
+  .text-status-warning {
+    @apply text-yellow-600;
+  }
+
+  .bg-status-success {
+    @apply bg-green-600;
+  }
+
+  .bg-status-error {
+    @apply bg-red-600;
+  }
+
+  .bg-status-warning {
+    @apply bg-yellow-600;
+  }
+
+  .bg-text-muted {
+    @apply bg-gray-500;
+  }
+
+  .dark .status-success {
+    @apply bg-green-900 bg-opacity-20 text-green-200;
+  }
+  
+  .dark .status-error {
+    @apply bg-red-900 bg-opacity-20 text-red-200;
+  }
+  
+  .dark .status-warning {
+    @apply bg-yellow-900 bg-opacity-20 text-yellow-200;
+  }
+
+  .dark .text-status-success {
+    @apply text-green-400;
+  }
+
+  .dark .text-status-error {
+    @apply text-red-400;
+  }
+
+  .dark .text-status-warning {
+    @apply text-yellow-400;
+  }
+
+  .dark .bg-status-success {
+    @apply bg-green-400;
+  }
+
+  .dark .bg-status-error {
+    @apply bg-red-400;
+  }
+
+  .dark .bg-status-warning {
+    @apply bg-yellow-400;
+  }
+
+  .dark .bg-text-muted {
+    @apply bg-gray-400;
+  }
+
+  /* Comprehensive theme utility classes for common patterns */
+  
+  /* Status badges - success */
+  .badge-success {
+    @apply bg-green-100 text-green-800 px-2 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .dark .badge-success {
+    @apply bg-green-900 bg-opacity-20 text-green-200;
+  }
+  
+  /* Status badges - error */
+  .badge-error {
+    @apply bg-red-100 text-red-800 px-2 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .dark .badge-error {
+    @apply bg-red-900 bg-opacity-20 text-red-200;
+  }
+  
+  /* Status badges - warning */
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800 px-2 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .dark .badge-warning {
+    @apply bg-yellow-900 bg-opacity-20 text-yellow-200;
+  }
+
+  /* Link colors */
+  .link-primary {
+    @apply text-brand-primary hover:text-blue-600 transition-colors;
+  }
+  
+  .dark .link-primary {
+    @apply hover:text-blue-400;
+  }
+
+  /* Button variants */
+  .btn-danger-outline {
+    @apply p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50;
+  }
+  
+  .dark .btn-danger-outline {
+    @apply hover:bg-red-900 hover:bg-opacity-20;
+  }
+  
+  .btn-info-outline {
+    @apply p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50;
+  }
+  
+  .dark .btn-info-outline {
+    @apply hover:bg-blue-900 hover:bg-opacity-20;
+  }
+
+  /* Icon colors */
+  .icon-success {
+    @apply text-green-600;
+  }
+  
+  .dark .icon-success {
+    @apply text-green-400;
+  }
+  
+  .icon-error {
+    @apply text-red-600;
+  }
+  
+  .dark .icon-error {
+    @apply text-red-400;
+  }
+  
+  .icon-warning {
+    @apply text-yellow-600;
+  }
+  
+  .dark .icon-warning {
+    @apply text-yellow-400;
+  }
+
+  /* Error message styling */
+  .error-container {
+    @apply bg-red-50 border border-red-200;
+  }
+
+  .dark .error-container {
+    @apply bg-red-900 bg-opacity-20 border-red-800;
+  }
+
+  .error-text {
+    @apply text-red-800;
+  }
+
+  .dark .error-text {
+    @apply text-red-200;
+  }
+
+  /* Application content styles */
+  .app-heading {
+    @apply text-3xl font-bold text-text-primary;
+  }
+
+  .app-description {
+    @apply text-lg text-text-secondary;
+  }
+
+  .status-card {
+    @apply bg-background-card p-6 rounded-lg shadow-lg border border-border-default;
+  }
+
+  .status-card-title {
+    @apply text-xl font-semibold text-text-primary;
+  }
+
+  .status-card-content {
+    @apply text-text-secondary;
+  }
+
+  /* Button Components */
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
+  }
+
+  /* Card Component */
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+  }
+
+  /* Status Badge Components */
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .status-online {
+    @apply status-badge bg-green-100 text-green-800;
+  }
+
+  .status-offline {
+    @apply status-badge bg-red-100 text-red-800;
+  }
+
+  .status-connecting {
+    @apply status-badge bg-yellow-100 text-yellow-800;
+  }
+
+  .status-error {
+    @apply status-badge bg-red-100 text-red-800;
+  }
+
+  /* Loading Components */
+  .loading-spinner {
+    @apply inline-block w-8 h-8 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin;
+  }
+
+  /* Notification Components */
+  .notification-container {
+    @apply max-w-4xl mx-auto p-6;
+  }
+
+  .notification-header {
+    @apply flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-200;
+  }
+
+  .notification-title {
+    @apply text-2xl font-bold text-gray-900;
+  }
+
+  .notification-grid {
+    @apply space-y-4;
   }
 }

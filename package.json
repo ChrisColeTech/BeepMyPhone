@@ -7,27 +7,36 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/beepmyphone.git"
+    "url": "git+https://github.com/YOUR_USERNAME/beepmyphone.git"
   },
   "scripts": {
-    "dev": "concurrently --names \"BACKEND,FRONTEND,ELECTRON\" --prefix-colors \"blue,green,yellow\" \"npm run backend\" \"npm run frontend\" \"sleep 5 && npm run electron\"",
+    "dev": "concurrently --names \"BACKEND,FRONTEND,ELECTRON\" --prefix-colors \"blue,green,yellow\" \"npm run backend\" \"npm run frontend\" \"wait-on http://localhost:5173 && npm run electron\"",
     "build": "cd backend/app && npm run build && cd ../../frontend/app && npm run build && cd ../../electron/app && npm run build",
     "start": "concurrently --names \"BACKEND,ELECTRON\" --prefix-colors \"blue,yellow\" \"cd backend/app && npm start\" \"wait-on -t 30000 http://0.0.0.0:3001 && cd electron/app && npm start\"",
     "bundle": "npm run build && electron-builder",
-    "backend": "cd backend/app && npm run dev",
+    "backend": "cd backend/app && dotnet run",
     "frontend": "cd frontend/app && npm run dev",
-    "electron": "cd electron/app && npm run dev",
+    "electron": "cd electron/app && npx tsc && cd ../.. && cross-env NODE_ENV=development VITE_DEV_URL=http://localhost:5173 npx electron electron/app",
     "backend:build": "cd backend/app && npm run build",
     "frontend:build": "cd frontend/app && npm run build",
-    "electron:build": "cd electron/app && npm run build",
+    "electron:build": "cd electron/app && tsc",
     "backend:start": "cd backend/app && npm start",
-    "electron:start": "cd electron/app && npm start"
+    "electron:start": "cd electron/app && electron dist/main.js"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "electron-updater": "^6.1.0",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "concurrently": "^8.2.0",
-    "wait-on": "^8.0.4",
     "cross-env": "^7.0.3",
-    "electron-builder": "^24.9.0"
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "typescript": "^5.0.0",
+    "wait-on": "^8.0.4"
   },
   "build": {
     "appId": "com.beepmyphone.app",
@@ -77,5 +86,13 @@
     "react",
     "nodejs",
     "typescript"
-  ]
+  ],
+  "main": "test_signalr_connection.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/beepmyphone/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/beepmyphone#readme"
 }
