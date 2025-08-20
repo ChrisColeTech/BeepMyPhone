@@ -126,7 +126,9 @@ class SignalRService: ObservableObject {
             print("✅ SignalR negotiated, connectionId: \(connectionId)")
             
             // Step 2: Connect WebSocket with connection ID
-            let wsURL = URL(string: "ws://\(self.serverURL)/notificationHub?id=\(connectionId)")!
+            // Auto-detect protocol based on server URL
+            let protocol = self.serverURL.contains("ngrok") || self.serverURL.contains("https") ? "wss" : "ws"
+            let wsURL = URL(string: "\(protocol)://\(self.serverURL)/notificationHub?id=\(connectionId)")!
             
             self.webSocketTask = urlSession.webSocketTask(with: wsURL)
             self.webSocketTask?.resume()
@@ -144,7 +146,9 @@ class SignalRService: ObservableObject {
     }
     
     private func negotiateSignalRConnection(completion: @escaping (String?) -> Void) {
-        guard let url = URL(string: "http://\(serverURL)/notificationHub/negotiate") else {
+        // Auto-detect HTTP/HTTPS protocol
+        let httpProtocol = serverURL.contains("ngrok") || serverURL.contains("https") ? "https" : "http"
+        guard let url = URL(string: "\(httpProtocol)://\(serverURL)/notificationHub/negotiate") else {
             completion(nil)
             return
         }
@@ -383,7 +387,9 @@ class SignalRService: ObservableObject {
     }
     
     private func pollForMissedNotifications() {
-        let url = URL(string: "http://\(serverURL)/api/notifications/recent?count=5")!
+        // Auto-detect HTTP/HTTPS protocol for polling
+        let httpProtocol = serverURL.contains("ngrok") || serverURL.contains("https") ? "https" : "http"
+        let url = URL(string: "\(httpProtocol)://\(serverURL)/api/notifications/recent?count=5")!
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
