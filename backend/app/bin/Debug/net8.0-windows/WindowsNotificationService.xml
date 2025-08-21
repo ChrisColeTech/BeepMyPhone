@@ -1,0 +1,378 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WindowsNotificationService</name>
+    </assembly>
+    <members>
+        <member name="T:WindowsNotificationService.Controllers.NotificationsController">
+            <summary>
+            API controller for managing Windows notifications
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.GetRecentNotifications(System.Int32)">
+            <summary>
+            Retrieves recent Windows notifications
+            </summary>
+            <param name="count">The maximum number of notifications to retrieve (default: 10, max: 100)</param>
+            <returns>A list of recent Windows notifications</returns>
+            <response code="200">Returns the list of recent notifications</response>
+            <response code="400">If the count parameter is invalid</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.GetStatus">
+            <summary>
+            Gets the current status of the notification monitoring service
+            </summary>
+            <returns>Service status information including monitoring state and timestamp</returns>
+            <response code="200">Returns the current service status</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.GetRecentFormattedNotifications(System.Int32)">
+            <summary>
+            Retrieves recent Windows notifications formatted for mobile display
+            </summary>
+            <param name="count">The maximum number of notifications to retrieve (default: 10, max: 100)</param>
+            <returns>A list of formatted notifications optimized for mobile</returns>
+            <response code="200">Returns the list of formatted notifications</response>
+            <response code="400">If the count parameter is invalid</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.GetRegisteredDevices">
+            <summary>
+            Gets all registered devices
+            </summary>
+            <returns>A list of registered devices with their status</returns>
+            <response code="200">Returns the list of registered devices</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.GetActiveDevices">
+            <summary>
+            Gets only active registered devices
+            </summary>
+            <returns>A list of currently active devices</returns>
+            <response code="200">Returns the list of active devices</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.RegisterDevice(WindowsNotificationService.Controllers.DeviceRegistrationRequest)">
+            <summary>
+            Registers a new device for notification forwarding
+            </summary>
+            <param name="request">Device registration details</param>
+            <returns>The registered device with connection details</returns>
+            <response code="200">Device registered successfully</response>
+            <response code="400">Invalid device data</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.UpdateDevice(System.String,WindowsNotificationService.Controllers.DeviceUpdateRequest)">
+            <summary>
+            Updates an existing device
+            </summary>
+            <param name="id">Device ID</param>
+            <param name="request">Updated device details</param>
+            <returns>The updated device</returns>
+            <response code="200">Device updated successfully</response>
+            <response code="404">Device not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.DeleteDevice(System.String)">
+            <summary>
+            Deletes a registered device
+            </summary>
+            <param name="id">Device ID</param>
+            <returns>Success confirmation</returns>
+            <response code="204">Device deleted successfully</response>
+            <response code="404">Device not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.SendTestNotification(System.String,WindowsNotificationService.Controllers.TestNotificationRequest)">
+            <summary>
+            Sends a test notification to a specific device
+            </summary>
+            <param name="id">Device ID</param>
+            <param name="request">Test notification details</param>
+            <returns>Success confirmation</returns>
+            <response code="200">Test notification sent</response>
+            <response code="404">Device not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.NotificationsController.GetStats">
+            <summary>
+            Gets notification statistics
+            </summary>
+            <returns>Statistics about notifications</returns>
+            <response code="200">Returns notification statistics</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="T:WindowsNotificationService.Controllers.SettingsController">
+            <summary>
+            API controller for managing application settings
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.SettingsController.GetSettings">
+            <summary>
+            Gets current application settings
+            </summary>
+            <returns>Application settings</returns>
+            <response code="200">Returns current settings</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Controllers.SettingsController.UpdateSettings(System.Object)">
+            <summary>
+            Updates application settings
+            </summary>
+            <param name="settings">Updated settings</param>
+            <returns>Updated settings</returns>
+            <response code="200">Settings updated successfully</response>
+            <response code="400">Invalid settings data</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WindowsNotificationService.Hubs.NotificationHub.RegisterDevice(System.String,System.String,System.String)">
+            <summary>
+            Registers a device with the SignalR hub for targeted messaging
+            </summary>
+            <param name="deviceId">Unique device identifier</param>
+            <param name="deviceName">Human-readable device name</param>
+            <param name="deviceType">Type of device (iOS, Android, Web, etc.)</param>
+        </member>
+        <member name="M:WindowsNotificationService.Hubs.NotificationHub.GetRegisteredDevices">
+            <summary>
+            Gets list of currently registered devices
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Hubs.NotificationHub.SendToDevice(System.String,WindowsNotificationService.Models.WindowsNotification)">
+            <summary>
+            Sends a notification to a specific device
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Hubs.NotificationHub.SendToAllDevices(WindowsNotificationService.Models.WindowsNotification)">
+            <summary>
+            Sends a notification to all registered devices
+            </summary>
+        </member>
+        <member name="T:WindowsNotificationService.Models.FormattedNotification">
+            <summary>
+            Represents a formatted notification optimized for mobile display
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.Id">
+            <summary>
+            Unique identifier for the notification
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.DisplayTitle">
+            <summary>
+            Clean, readable title for mobile display
+            </summary>
+            <example>Weather: Bedford 72°F</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.DisplayMessage">
+            <summary>
+            Formatted message content for mobile display
+            </summary>
+            <example>Current temperature in Bedford • Beach hazards statement</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.AppDisplayName">
+            <summary>
+            User-friendly app name
+            </summary>
+            <example>Windows Widgets</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.OriginalAppName">
+            <summary>
+            Original app name from Windows
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.Category">
+            <summary>
+            Notification category for grouping/filtering
+            </summary>
+            <example>Weather, News, Communication, System</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.Priority">
+            <summary>
+            Priority level for mobile display
+            </summary>
+            <example>High, Medium, Normal, Low</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.Timestamp">
+            <summary>
+            Timestamp when the notification was received
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.NotificationType">
+            <summary>
+            Original notification type from Windows
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.ActionUrl">
+            <summary>
+            Action URL if the notification is clickable
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.Icon">
+            <summary>
+            Emoji icon based on category
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.FormattedNotification.ShortSummary">
+            <summary>
+            Short summary for push notification display
+            </summary>
+        </member>
+        <member name="T:WindowsNotificationService.Models.RegisteredDevice">
+            <summary>
+            Represents a registered device for targeted notifications
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.RegisteredDevice.DeviceId">
+            <summary>
+            Unique device identifier (UUID, device serial, etc.)
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.RegisteredDevice.DeviceName">
+            <summary>
+            Human-readable device name (e.g., "John's iPhone")
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.RegisteredDevice.DeviceType">
+            <summary>
+            Type of device (iOS, Android, Web, Desktop)
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.RegisteredDevice.ConnectionId">
+            <summary>
+            Current SignalR connection ID
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.RegisteredDevice.LastSeen">
+            <summary>
+            Last time device was seen/active
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.RegisteredDevice.IsActive">
+            <summary>
+            Whether device is currently connected
+            </summary>
+        </member>
+        <member name="T:WindowsNotificationService.Models.WindowsNotification">
+            <summary>
+            Represents a Windows notification captured by the monitoring service
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.Id">
+            <summary>
+            Unique identifier for the notification
+            </summary>
+            <example>f47ac10b-58cc-4372-a567-0e02b2c3d479</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.AppName">
+            <summary>
+            Name of the application that generated the notification
+            </summary>
+            <example>Microsoft Teams</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.Title">
+            <summary>
+            Title of the notification
+            </summary>
+            <example>New message from John Doe</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.Message">
+            <summary>
+            Main content/body of the notification
+            </summary>
+            <example>Hey, are you available for a quick call?</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.Timestamp">
+            <summary>
+            Timestamp when the notification was received
+            </summary>
+            <example>2024-01-15T10:30:00Z</example>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.RawPayload">
+            <summary>
+            Raw payload data from the Windows notification system
+            </summary>
+        </member>
+        <member name="P:WindowsNotificationService.Models.WindowsNotification.NotificationType">
+            <summary>
+            Type/category of the notification (0=Info, 1=Warning, 2=Error)
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="T:WindowsNotificationService.Services.DeviceManagementService">
+            <summary>
+            Service for managing device registration and persistence
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.RegisterDeviceAsync(WindowsNotificationService.Models.RegisteredDevice)">
+            <summary>
+            Registers or updates a device
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.GetAllDevicesAsync">
+            <summary>
+            Gets all registered devices
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.GetActiveDevicesAsync">
+            <summary>
+            Gets active devices only
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.DeactivateDeviceByConnectionAsync(System.String)">
+            <summary>
+            Marks a device as inactive by connection ID
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.IncrementNotificationCountAsync(System.String)">
+            <summary>
+            Increments notification count for a device
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.GetDeviceByIdAsync(System.String)">
+            <summary>
+            Gets device by ID
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.UpdateDeviceAsync(WindowsNotificationService.Models.RegisteredDevice)">
+            <summary>
+            Updates an existing device
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.DeleteDeviceAsync(System.String)">
+            <summary>
+            Deletes a device by ID
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.DeviceManagementService.CleanupOldDevicesAsync">
+            <summary>
+            Cleans up old inactive devices (older than 30 days)
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.NotificationBroadcastService.BroadcastToActiveDevices(WindowsNotificationService.Models.WindowsNotification,WindowsNotificationService.Models.FormattedNotification)">
+            <summary>
+            Broadcasts notification to all active devices
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.NotificationBroadcastService.SendToDeviceAsync(System.String,WindowsNotificationService.Models.WindowsNotification)">
+            <summary>
+            Sends notification to a specific device
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.NotificationBroadcastService.SendToDeviceTypeAsync(System.String,WindowsNotificationService.Models.WindowsNotification)">
+            <summary>
+            Sends notification to devices of a specific type
+            </summary>
+        </member>
+        <member name="T:WindowsNotificationService.Services.NotificationFormatterService">
+            <summary>
+            Service for formatting Windows notifications into readable mobile-friendly messages
+            </summary>
+        </member>
+        <member name="M:WindowsNotificationService.Services.NotificationFormatterService.FormatForMobile(WindowsNotificationService.Models.WindowsNotification)">
+            <summary>
+            Formats a Windows notification for mobile display
+            </summary>
+        </member>
+    </members>
+</doc>

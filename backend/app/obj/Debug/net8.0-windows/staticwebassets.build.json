@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "YhLavrvZKdEVpweoudeRTvevCjj1OloVO59BkrpXbKc=",
+  "Source": "WindowsNotificationService",
+  "BasePath": "_content/WindowsNotificationService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
