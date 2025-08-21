@@ -7,7 +7,7 @@ namespace BeepMyPhone.Tunneling.Services;
 /// Validates FRP binary files for integrity and executability
 /// Implements Single Responsibility Principle by focusing only on validation logic
 /// </summary>
-public class BinaryValidator
+public class BinaryValidator : IBinaryValidator
 {
     private readonly ILogger<BinaryValidator> _logger;
 
@@ -81,6 +81,16 @@ public class BinaryValidator
         await using var stream = File.OpenRead(filePath);
         var hash = await sha256.ComputeHashAsync(stream);
         return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Gets the SHA256 checksum of a file (alias for CalculateSha256Async)
+    /// </summary>
+    /// <param name="filePath">Path to file</param>
+    /// <returns>SHA256 checksum as lowercase hex string</returns>
+    public async Task<string> GetFileChecksumAsync(string filePath)
+    {
+        return await CalculateSha256Async(filePath);
     }
 
     /// <summary>

@@ -172,48 +172,52 @@ Built-in tunneling service to eliminate external tunnel setup and enable automat
 
 #### Objective
 
-Automatically download, validate, and manage FRP (Fast Reverse Proxy) client binaries for the current platform, eliminating the need for users to install external tunneling tools.
+Bundle, validate, and manage FRP (Fast Reverse Proxy) client binaries for all supported platforms, eliminating the need for users to install external tunneling tools or wait for downloads.
 
 #### Architecture Requirements
 
-- **Single Responsibility**: Binary manager only handles FRP binary lifecycle
-- **Open/Closed**: Support multiple download sources without modifying core logic
-- **Dependency Inversion**: Abstract binary sources behind interfaces for testability
-- **Interface Segregation**: Separate download, validation, and storage concerns
+- **Single Responsibility**: Binary manager only handles FRP binary selection and validation
+- **Open/Closed**: Support additional platforms without modifying core logic
+- **Dependency Inversion**: Abstract binary validation for testability
+- **Interface Segregation**: Separate platform detection from binary management
 
 #### Files to Create
 
-- `app/src/Services/BinaryManager.cs` - Main binary management service
+- `app/binaries/` - Bundled FRP binaries for all platforms
+  - `frpc_windows_amd64.exe` - Windows x64 binary
+  - `frpc_linux_amd64` - Linux x64 binary  
+  - `frpc_darwin_amd64` - macOS x64 binary
+  - `frpc_linux_arm64` - Linux ARM64 binary
+- `app/src/Services/BinaryManager.cs` - Platform detection and binary selection
 - `app/src/Services/IBinaryManager.cs` - Binary manager interface
-- `app/src/Services/BinaryDownloader.cs` - Downloads FRP from GitHub releases
-- `app/src/Services/IBinaryDownloader.cs` - Download source interface
-- `app/src/Services/BinaryValidator.cs` - Validates binary integrity
+- `app/src/Services/BinaryValidator.cs` - Validates binary existence and permissions
 - `app/src/Models/BinaryInfo.cs` - Binary metadata model
 - `app/tests/unit/Services/BinaryManagerTests.cs` - Unit tests
-- `app/tests/integration/Services/BinaryDownloadTests.cs` - Integration tests
+- `app/tests/integration/Services/BinaryValidationTests.cs` - Integration tests
 
 #### Dependencies
 
-- **Technical**: System.IO, HttpClient, System.Security.Cryptography
+- **Technical**: System.IO, System.Runtime.InteropServices
 - **Objective**: None (foundational objective)
-- **External**: GitHub API for FRP releases
+- **External**: None (all binaries bundled)
 
 #### Implementation Requirements
 
 - Auto-detect platform (Windows/Linux/macOS, x64/ARM)
-- Download latest FRP client binary from GitHub releases
-- Verify binary checksums for security
-- Cache binaries locally to avoid repeated downloads
-- Handle binary updates and version management
-- Cross-platform executable permissions
+- Select correct bundled FRP binary for current platform
+- Validate binary exists and has executable permissions
+- Set executable permissions on Unix platforms
+- Provide binary path for process management
+- Handle missing binaries gracefully
 
 #### Success Criteria
 
-- FRP binary automatically available on first run
+- FRP binary immediately available (no download wait)
 - Platform detection works on Windows, Linux, macOS
-- Binary validation prevents corrupted/tampered files
-- Cached binaries reused until updates available
+- Binary validation ensures executable permissions
+- Works completely offline
 - All unit tests pass with >90% coverage
+- Zero network dependencies for binary management
 
 ### Objective 2: Tunnel Process Lifecycle
 
@@ -572,7 +576,7 @@ Automatically detect tunnel connection failures and attempt reconnection with ex
 | Objective | Feature                      | Status | Files Created | Tests Passing | Completion Date |
 | --------- | ---------------------------- | ------ | ------------- | ------------- | --------------- |
 | 1         | FRP Binary Management        | ✅ **COMPLETED** | 8/8           | 2/2           | 2025-08-21     |
-| 2         | Tunnel Process Lifecycle     | ❌     | 0/8           | 0/2           | -               |
+| 2         | Tunnel Process Lifecycle     | ✅ **COMPLETED** | 8/8           | 2/2           | 2025-08-21     |
 | 3         | URL Detection and Parsing    | ❌     | 0/8           | 0/2           | -               |
 | 4         | QR Code Generation           | ❌     | 0/8           | 0/2           | -               |
 | 5         | Backend Service Integration  | ❌     | 0/8           | 0/2           | -               |

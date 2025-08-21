@@ -153,25 +153,47 @@ Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicatio
 
 ## 🔧 Integration Requirements
 
-### Service Registration
+### Standalone Service Architecture
+This tunnel service runs as a **standalone HTTP API** that the main BeepMyPhone backend communicates with via REST calls.
+
+### Service Registration (Tunnel Service Program.cs)
 ```csharp
-// Add to Program.cs
+// Tunnel service Program.cs
 builder.Services.AddHttpClient<BinaryDownloader>();
 builder.Services.AddSingleton<BinaryValidator>();
+builder.Services.AddSingleton<IBinaryDownloader, BinaryDownloader>();
 builder.Services.AddSingleton<IBinaryManager, BinaryManager>();
 ```
 
-### Usage Pattern
+### Main Backend Integration Pattern
 ```csharp
-// Inject IBinaryManager into tunnel services
-public class TunnelProcessManager(IBinaryManager binaryManager)
+// Main BeepMyPhone backend calls tunnel service APIs
+public class MainBackendTunnelClient
 {
-    public async Task StartAsync()
+    private readonly HttpClient _httpClient;
+    
+    public async Task<string> GetTunnelUrlAsync()
     {
-        var frpPath = await binaryManager.EnsureBinaryAsync();
-        // Use frpPath to start FRP process
+        var response = await _httpClient.GetAsync("http://localhost:5001/tunnel/url");
+        return await response.Content.ReadAsStringAsync();
+    }
+    
+    public async Task<TunnelStatus> GetTunnelStatusAsync()
+    {
+        var response = await _httpClient.GetAsync("http://localhost:5001/tunnel/status");
+        return await response.Content.ReadFromJsonAsync<TunnelStatus>();
     }
 }
+```
+
+### Tunnel Service Startup
+```bash
+# Start tunnel service (runs on port 5001)
+cd tunnel/app
+dotnet run
+
+# Main BeepMyPhone backend (runs on port 5000) calls tunnel APIs
+curl http://localhost:5001/tunnel/status
 ```
 
 ## 📈 Performance Characteristics
@@ -193,10 +215,11 @@ public class TunnelProcessManager(IBinaryManager binaryManager)
 
 ## 🚀 Next Integration Steps
 
-1. **Objective 2**: Use IBinaryManager in TunnelProcessManager
-2. **Service Registration**: Add binary services to Program.cs
-3. **Configuration**: Optionally allow custom GitHub repositories
-4. **Monitoring**: Add metrics for download success/failure rates
+1. **Objective 2**: Create TunnelProcessManager using IBinaryManager to launch FRP processes
+2. **REST API Controllers**: Create TunnelController with endpoints for /tunnel/status, /tunnel/start, etc.
+3. **Background Services**: Add hosted service for automatic tunnel startup
+4. **Health Monitoring**: Implement tunnel health checks and status reporting
+5. **Main Backend Integration**: Create HttpClient in main BeepMyPhone backend to call tunnel APIs
 
 ## ✅ Success Criteria Met
 

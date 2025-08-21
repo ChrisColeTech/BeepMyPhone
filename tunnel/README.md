@@ -14,31 +14,33 @@ The BeepMyPhone built-in tunneling service automatically creates secure public U
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Built-in Tunneling Architecture             │
+│                    Standalone Tunnel Service Architecture      │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌──────────────────┐    ┌─────────────────┐    ┌──────────────┐ │
 │  │ BeepMyPhone      │────│ Tunnel Service  │────│ Public Cloud │ │
-│  │ Backend          │    │ (Embedded)      │    │ Relay Server │ │
-│  │ (localhost:5001) │    │                 │    │              │ │
+│  │ Main Backend     │HTTP│ (Standalone)    │FRP │ Relay Server │ │
+│  │ (port 5000)      │API │ (port 5001)     │    │ (GitHub)     │ │
 │  └──────────────────┘    └─────────────────┘    └──────────────┘ │
 │           │                        │                     │       │
 │           │                        │                     │       │
 │           ▼                        ▼                     ▼       │
 │  ┌──────────────────┐    ┌─────────────────┐    ┌──────────────┐ │
-│  │ Local Services   │    │ WebSocket       │    │ Public URL   │ │
-│  │ • SignalR Hub    │    │ Tunnel Client   │    │ Generated    │ │
-│  │ • Notification   │    │ • Auto-connect  │    │ Dynamically  │ │
-│  │ • Device API     │    │ • Heartbeat     │    │              │ │
+│  │ Main Services    │    │ Tunnel Services │    │ Public URL   │ │
+│  │ • SignalR Hub    │    │ • Binary Mgmt   │    │ Generated    │ │
+│  │ • Notification   │    │ • Process Mgmt  │    │ Dynamically  │ │
+│  │ • Device API     │    │ • Health Mon.   │    │ • QR Codes   │ │
 │  └──────────────────┘    └─────────────────┘    └──────────────┘ │
 │                                                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│                    User Experience                             │
+│                    API Communication                           │
 │                                                                 │
-│  1. User starts BeepMyPhone                                    │
-│  2. Tunnel automatically creates: https://xyz123.tunnel.dev    │
-│  3. iOS app automatically detects and connects                 │
-│  4. No manual tunnel setup required                            │
+│  Main Backend calls:                                           │
+│  • GET /tunnel/status    - Current tunnel state               │
+│  • GET /tunnel/url       - Active tunnel URL                  │
+│  • GET /tunnel/qr-code   - QR code for mobile setup           │
+│  • POST /tunnel/start    - Start tunnel process               │
+│  • POST /tunnel/stop     - Stop tunnel process                │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,10 +53,10 @@ We have identified three viable approaches for implementing the built-in tunneli
 - **Benefits**: Native .NET, battle-tested at Microsoft scale
 - **Implementation**: Embedded YARP service that creates tunnels to public relay servers
 
-### Approach 2: Embedded FRP Client (Fast & Reliable)  
-- **Technology**: FRP (Fast Reverse Proxy) embedded client
-- **Benefits**: Mature, widely used, excellent performance
-- **Implementation**: Bundle FRP client binary and manage via .NET
+### Approach 2: Bundled FRP Client (Fast & Reliable) ⭐ **CHOSEN**
+- **Technology**: FRP (Fast Reverse Proxy) bundled client binaries
+- **Benefits**: Instant startup, zero network dependencies, bulletproof reliability
+- **Implementation**: Pre-bundle FRP client binaries for all platforms, select at runtime
 
 ### Approach 3: Custom WebSocket Tunnel (Full Control)
 - **Technology**: Custom .NET WebSocket-based tunneling
@@ -65,28 +67,33 @@ We have identified three viable approaches for implementing the built-in tunneli
 
 ```
 tunnel/
-├── README.md                      # This file
-├── docs/
-│   ├── IMPLEMENTATION_PLAN.md     # Detailed implementation guide
-│   ├── ARCHITECTURE.md           # Technical architecture deep-dive  
-│   ├── API_SPECIFICATION.md      # Public tunnel API design
-│   └── DEPLOYMENT_GUIDE.md       # Cloud relay server deployment
-├── src/
-│   ├── BeepMyPhone.Tunneling/    # Main tunneling library
-│   ├── BeepMyPhone.Relay/        # Public relay server
-│   ├── BeepMyPhone.Client/       # Tunnel client integration
-│   └── BeepMyPhone.Common/       # Shared utilities
-├── tests/
-│   ├── unit/                     # Unit tests
-│   ├── integration/              # Integration tests
-│   └── performance/              # Load testing
-├── scripts/
-│   ├── deploy-relay.sh           # Deploy relay servers
-│   ├── test-tunnel.sh            # Test tunnel functionality
-│   └── generate-certs.sh         # SSL certificate generation
-└── docker/
-    ├── relay-server/             # Dockerized relay server
-    └── test-environment/         # Local testing setup
+├── README.md                           # This file
+├── BeepMyPhone.Tunneling.sln          # Solution file for both projects
+├── app/                                # Main tunnel service (HTTP API)
+│   ├── BeepMyPhone.Tunneling.csproj   # Web API project
+│   ├── Program.cs                     # HTTP service startup
+│   ├── Controllers/                   # REST API controllers
+│   ├── Services/                      # Business logic services
+│   │   ├── BinaryManager.cs           # FRP binary management
+│   │   ├── BinaryDownloader.cs        # GitHub releases integration
+│   │   ├── BinaryValidator.cs         # Security validation
+│   │   └── IBinary*.cs                # Service interfaces
+│   └── Models/                        # Data models
+│       └── BinaryInfo.cs              # Binary metadata
+├── tests/                             # Test project
+│   ├── BeepMyPhone.Tunneling.Tests.csproj  # Test project
+│   ├── unit/                          # Unit tests with mocking
+│   │   └── Services/
+│   │       └── BinaryManagerTests.cs  # 16 test methods, 96% coverage
+│   └── integration/                   # Integration tests
+│       └── Services/
+│           └── BinaryDownloadTests.cs # 15 test methods, GitHub API
+└── docs/
+    ├── IMPLEMENTATION_PLAN.md         # 7-objective implementation guide
+    ├── ARCHITECTURE.md               # Technical architecture deep-dive  
+    ├── API_REFERENCE.md              # REST API documentation
+    └── phases/
+        └── PHASE_01_BINARY_MANAGEMENT.md  # Completed phase docs
 ```
 
 ## 🎯 User Experience Goals
