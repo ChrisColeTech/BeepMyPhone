@@ -126,8 +126,12 @@ class SignalRService: ObservableObject {
             print("✅ SignalR negotiated, connectionId: \(connectionId)")
             
             // Step 2: Connect WebSocket with connection ID
-            // Auto-detect protocol based on server URL
-            let protocol = self.serverURL.contains("ngrok") || self.serverURL.contains("https") ? "wss" : "ws"
+            // Auto-detect protocol based on server URL (tunneling services use HTTPS/WSS)
+            let isSecureTunnel = self.serverURL.contains("ngrok") || 
+                               self.serverURL.contains("loca.lt") || 
+                               self.serverURL.contains("cloudflare") || 
+                               self.serverURL.contains("https")
+            let protocol = isSecureTunnel ? "wss" : "ws"
             let wsURL = URL(string: "\(protocol)://\(self.serverURL)/notificationHub?id=\(connectionId)")!
             
             self.webSocketTask = urlSession.webSocketTask(with: wsURL)
@@ -146,8 +150,12 @@ class SignalRService: ObservableObject {
     }
     
     private func negotiateSignalRConnection(completion: @escaping (String?) -> Void) {
-        // Auto-detect HTTP/HTTPS protocol
-        let httpProtocol = serverURL.contains("ngrok") || serverURL.contains("https") ? "https" : "http"
+        // Auto-detect HTTP/HTTPS protocol (tunneling services use HTTPS)
+        let isSecureTunnel = serverURL.contains("ngrok") || 
+                           serverURL.contains("loca.lt") || 
+                           serverURL.contains("cloudflare") || 
+                           serverURL.contains("https")
+        let httpProtocol = isSecureTunnel ? "https" : "http"
         guard let url = URL(string: "\(httpProtocol)://\(serverURL)/notificationHub/negotiate") else {
             completion(nil)
             return
@@ -387,8 +395,12 @@ class SignalRService: ObservableObject {
     }
     
     private func pollForMissedNotifications() {
-        // Auto-detect HTTP/HTTPS protocol for polling
-        let httpProtocol = serverURL.contains("ngrok") || serverURL.contains("https") ? "https" : "http"
+        // Auto-detect HTTP/HTTPS protocol for polling (tunneling services use HTTPS)
+        let isSecureTunnel = serverURL.contains("ngrok") || 
+                           serverURL.contains("loca.lt") || 
+                           serverURL.contains("cloudflare") || 
+                           serverURL.contains("https")
+        let httpProtocol = isSecureTunnel ? "https" : "http"
         let url = URL(string: "\(httpProtocol)://\(serverURL)/api/notifications/recent?count=5")!
         
         URLSession.shared.dataTask(with: url) { data, response, error in
